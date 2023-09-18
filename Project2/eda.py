@@ -88,7 +88,8 @@ def obj(u, params, print_vals=False):
     J = 1 - x1
     Q = J[-1]
     if print_vals == True:
-        print(f"u = {u}, Q = {Q}")
+        pass
+        # print(f"u = {u}, Q = {Q}")
     return Q
 
 
@@ -213,7 +214,8 @@ def obj_segments(u, params, print_vals=False):
     J = 1 - x1
     Q = J[-1]
     if print_vals == True:
-        print(u, Q)
+        pass
+        # print(u, Q)
     return Q
 
 
@@ -241,12 +243,15 @@ res = minimize(
     method="SLSQP",
     constraints=con_segments,
 )
-print(f"res.x: {res.x}")
+# print(f"res.x: {res.x}")
 conversion = 1 - res.fun
-print(f"conversion = {conversion}")
+
 Tjackets = params["Tin"] * (1 + res.x)
-print(f"Tjackets = {Tjackets}")
-exit()
+# print(f"Tjackets = {Tjackets}")
+combined = np.vstack((Tjackets, res.x)).T
+np.set_printoptions(suppress=True)
+print(f"combined = {combined}")
+
 # 14
 z, c, T, Tw, x1, x2 = sim_segments(res.x, params)
 fig = plt.figure()
@@ -270,3 +275,5 @@ ax2.set_ylabel("Temperature [K]")
 ax2.set_title("Temperature profile")
 ax2.legend()
 fig.tight_layout()
+
+print(f"conversion = {conversion}")
