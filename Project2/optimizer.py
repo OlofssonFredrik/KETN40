@@ -5,6 +5,8 @@ from scipy.optimize import minimize
 
 from functions import (
     obj_segments,
+    obj_segments_2,
+    obj_segments_3,
     const_segments,
     tubular_reactor_model,
     sim_segments,
@@ -39,18 +41,24 @@ con_segments = {"type": "ineq", "fun": lambda u: const_segments(u, params)}
 
 
 # Optimization
-res = minimize(
-    lambda u: obj_segments(u, params, print_vals=False),
-    x0=init_guess,
-    bounds=bounds_segments,
-    method="SLSQP",
-    constraints=con_segments,
-)
+weights = np.linspace(0, 1, 11)
+conversions = []
+for w1 in weights:
+    res = minimize(
+        lambda u: obj_segments_2(u, w1, params, print_vals=False),
+        x0=init_guess,
+        bounds=bounds_segments,
+        method="SLSQP",
+        constraints=con_segments,
+    )
 
-# Print results
-conversion = 1 - res.fun
-Tjackets = params["Tin"] * (1 + res.x)
-combined = np.vstack((Tjackets, res.x)).T
-np.set_printoptions(suppress=True)
-print(f"combined = {combined}")
-print(f"conversion = {conversion}")
+    # Print results
+    conversion = 1 - res.fun
+    conversions.append(conversion)
+    # Tjackets = params["Tin"] * (1 + res.x)
+    # combined = np.vstack((Tjackets, res.x)).T
+    # np.set_printoptions(suppress=True)
+    # print(f"combined = {combined}")
+    # print(f"conversion = {conversion}")
+
+print(f"conversions = {conversions}")
