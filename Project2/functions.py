@@ -49,7 +49,7 @@ def sim_segments(u, params):
     return zsol, c, T, Tw, x1, x2, x3
 
 
-def obj_segments(u, params, print_vals=False):
+def obj_segments(u, params, print_vals=False, full_output=False):
     z, c, T, Tw, x1, x2, x3 = sim_segments(u, params)
     # print(f"x1: {x1}" + "\n")
     J = 1 - x1
@@ -59,6 +59,8 @@ def obj_segments(u, params, print_vals=False):
     if print_vals == True:
         pass
         # print(u, Q)
+    if full_output:
+        return Q, x1
     return Q
 
 
@@ -74,7 +76,7 @@ def obj_segments_2(u, w1, params, print_vals=False, full_output=False):
         pass
         # print(u, Q)
     if full_output:
-        print(f"z: {z}" + "\n")
+        # print(f"z: {z}" + "\n")
         return Q, x1, x2
     else:
         return Q
